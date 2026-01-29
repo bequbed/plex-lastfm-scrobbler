@@ -18,7 +18,7 @@ A lightweight Python/Flask server that listens for Plex Webhooks and scrobbles t
    git clone [https://github.com/YOUR_USERNAME/plex-lastfm-scrobbler.git](https://github.com/YOUR_USERNAME/plex-lastfm-scrobbler.git)
    cd plex-lastfm-scrobbler
 
-```
+
 
 2. **Install dependencies:**
 ```bash
