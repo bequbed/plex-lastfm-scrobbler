@@ -1,5 +1,3 @@
-Here is the raw Markdown code. Copy the text inside the code block below, go to your GitHub repo, click the **pencil icon** on `README.md`, delete everything, and paste this in.
-
 ```markdown
 # Plex to Last.fm Scrobbler (Clean Metadata)
 
