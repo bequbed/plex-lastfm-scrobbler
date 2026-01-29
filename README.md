@@ -1,4 +1,3 @@
-```markdown
 # Plex to Last.fm Scrobbler (Clean Metadata)
 
 A lightweight Python/Flask server that listens for Plex Webhooks and scrobbles tracks to Last.fm with advanced metadata cleaning.
