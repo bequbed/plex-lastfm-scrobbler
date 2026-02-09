@@ -1,16 +1,48 @@
 import json
-import re
-import pylast
 import logging
+import os
+import re
 import time
+
+import pylast
 from flask import Flask, request, Response
 
 # --- IMPORT CONFIG ---
-try:
-    import config
-except ImportError:
-    print("Error: config.py not found. Rename config.example.py to config.py and add your keys.")
-    exit(1)
+def load_config():
+    try:
+        import config
+        return {
+            "api_key": config.LASTFM_API_KEY,
+            "api_secret": config.LASTFM_API_SECRET,
+            "username": config.LASTFM_USERNAME,
+            "password": config.LASTFM_PASSWORD,
+            "source": "config.py",
+        }
+    except ImportError:
+        required = [
+            "LASTFM_API_KEY",
+            "LASTFM_API_SECRET",
+            "LASTFM_USERNAME",
+            "LASTFM_PASSWORD",
+        ]
+        missing = [key for key in required if not os.getenv(key)]
+        if missing:
+            missing_list = ", ".join(missing)
+            print(
+                "Error: config.py not found and missing environment variables: "
+                f"{missing_list}"
+            )
+            exit(1)
+        return {
+            "api_key": os.getenv("LASTFM_API_KEY"),
+            "api_secret": os.getenv("LASTFM_API_SECRET"),
+            "username": os.getenv("LASTFM_USERNAME"),
+            "password": os.getenv("LASTFM_PASSWORD"),
+            "source": "environment",
+        }
+
+
+config_values = load_config()
 
 # --- SETUP LOGGING ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
@@ -19,15 +51,17 @@ logger = logging.getLogger()
 # --- INITIALIZE LAST.FM ---
 try:
     # We hash the password here so it's not stored in plain text in memory longer than needed
-    password_hash = pylast.md5(config.LASTFM_PASSWORD)
+    password_hash = pylast.md5(config_values["password"])
 
     network = pylast.LastFMNetwork(
-        api_key=config.LASTFM_API_KEY,
-        api_secret=config.LASTFM_API_SECRET,
-        username=config.LASTFM_USERNAME,
+        api_key=config_values["api_key"],
+        api_secret=config_values["api_secret"],
+        username=config_values["username"],
         password_hash=password_hash,
     )
-    logger.info("Connected to Last.fm successfully.")
+    logger.info(
+        "Connected to Last.fm successfully using %s.", config_values["source"]
+    )
 except Exception as e:
     logger.error(f"Failed to connect to Last.fm: {e}")
     exit(1)
