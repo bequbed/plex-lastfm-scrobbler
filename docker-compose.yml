@@ -1,0 +1,8 @@
+services:
+  scrobbler:
+    build: .
+    container_name: plex-lastfm-scrobbler
+    env_file: .env
+    ports:
+      - "5000:5000"
+    restart: unless-stopped

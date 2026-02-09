@@ -32,6 +32,21 @@ pip install -r requirements.txt
 * Open `config.py` and paste your Last.fm API keys.
 * *Don't have keys? Get them here: [Last.fm API Account Creation*](https://www.last.fm/api/account/create)
 
+### Docker Compose (Recommended for servers)
+
+1. **Create environment file:**
+   ```bash
+   cp .env.example .env
+   ```
+   Fill in your Last.fm credentials in `.env`.
+
+2. **Build and start:**
+   ```bash
+   docker compose up -d --build
+   ```
+
+The service listens on port `5000`. Make sure this port is reachable from your Plex server.
+
 
 
 
@@ -60,7 +75,7 @@ http://localhost:5000/plex_scrobble
 ```
 
 
-*(Note: If Plex is running on a different machine than this script, replace `localhost` with the script's IP address).*
+*(Note: If Plex is running on a different machine than this script, replace `localhost` with the Docker host's IP address or hostname, e.g. `http://your-docker-host:5000/plex_scrobble`.)*
 
 ---
 
